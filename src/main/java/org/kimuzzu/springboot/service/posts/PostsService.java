@@ -1,8 +1,11 @@
 package org.kimuzzu.springboot.service.posts;
 
 import lombok.RequiredArgsConstructor;
+import org.kimuzzu.springboot.domain.posts.Posts;
 import org.kimuzzu.springboot.domain.posts.PostsRepository;
+import org.kimuzzu.springboot.web.dto.PostsResponseDto;
 import org.kimuzzu.springboot.web.dto.PostsSaveRequestDto;
+import org.kimuzzu.springboot.web.dto.PostsUpdateRequestDto;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -15,5 +18,22 @@ public class PostsService {
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
         return postsRepository.save(requestDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public Long update(Long id, PostsUpdateRequestDto requestDto) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+
+        posts.update(requestDto.getTitle(), requestDto.getContent());
+
+        return id;
+    }
+
+    public PostsResponseDto findById (Long id) {
+        Posts entity = postsRepository.findById(id)
+                .orElseThrow( () -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+
+        return new PostsResponseDto(entity);
     }
 }

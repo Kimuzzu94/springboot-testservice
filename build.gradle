@@ -36,4 +36,5 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('com.h2database:h2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    implementation 'io.projectreactor:reactor-core:3.2.5.RELEASE'
 }
